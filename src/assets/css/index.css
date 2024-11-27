@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .role-indicator {
+    @apply relative;
+  }
+
+  .role-indicator::before {
+    @apply absolute h-full w-1/2 rounded-2xl border border-stone-100 bg-black bg-[linear-gradient(180deg,_#f5f5f4_0%,_#e7e5e4_90%,_#f5f5f4_100%)] shadow-md transition duration-300 content-[""] active:bg-[linear-gradient(180deg,_#dbdbd7_0%,_#e7e5e4_90%,_#e7e7e4_100%)];
+  }
+}
