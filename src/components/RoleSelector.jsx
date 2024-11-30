@@ -11,12 +11,15 @@ const RoleSelector = ({ selectedRole, setSelectedRole }) => {
           "role-indicator has-[.designer-role-button:hover]:before:translate-x-full has-[.developer-role-button:hover]:before:translate-x-0",
           selectedRole === roles[1].toLowerCase() && "before:translate-x-full",
         )}
+        role="tablist"
       >
         {roles.map((role) => (
           <button
             key={role}
             className={`${role.toLowerCase() + "-role-button"} relative z-10 h-[2.125rem] w-[6.25rem]`}
             onClick={() => setSelectedRole(role.toLowerCase())}
+            aria-selected={selectedRole === role.toLowerCase()}
+            role="tab"
           >
             {role}
           </button>

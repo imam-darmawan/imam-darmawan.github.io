@@ -17,12 +17,12 @@ const Header = ({ selectedRole, setSelectedRole }) => {
         </a>
       </h1>
 
-      <div className="flex flex-grow-[2] justify-center max-[400px]:justify-start">
+      <nav className="flex flex-grow-[2] justify-center max-[400px]:justify-start">
         <RoleSelector
           selectedRole={selectedRole}
           setSelectedRole={setSelectedRole}
         />
-      </div>
+      </nav>
 
       <ul className="flex flex-grow justify-end gap-4">
         {links.map((link, idx) => (
