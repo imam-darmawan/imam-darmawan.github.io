@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Header from "./Header";
 import About from "./About";
+import Works from "./Works";
 
 const App = () => {
   const [selectedRole, setSelectedRole] = useState("developer");
@@ -10,6 +11,7 @@ const App = () => {
       <Header selectedRole={selectedRole} setSelectedRole={setSelectedRole} />
       <main>
         <About />
+        <Works />
       </main>
     </div>
   );
