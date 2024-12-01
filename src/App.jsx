@@ -13,6 +13,11 @@ const App = () => {
         <About />
         <Works />
       </main>
+      <footer className="mt-16">
+        <small className="block text-center text-xs text-stone-500">
+          &copy; Imam Darmawan
+        </small>
+      </footer>
     </div>
   );
 };
