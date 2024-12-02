@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { clsx } from "clsx";
 
 const Header = ({ selectedRole, setSelectedRole }) => {
-  const links = [
+  const externalLinks = [
     { label: "Upwork", url: "https://upwork.com" },
     { label: "Github", url: "https://github.com/imam-darmawan" },
   ];
@@ -25,7 +25,7 @@ const Header = ({ selectedRole, setSelectedRole }) => {
       </nav>
 
       <ul className="flex flex-grow justify-end gap-4">
-        {links.map((link, idx) => (
+        {externalLinks.map((link, idx) => (
           <li key={link.label}>
             <a
               href={link.url}
@@ -40,7 +40,8 @@ const Header = ({ selectedRole, setSelectedRole }) => {
               <span
                 className={clsx(
                   "invisible absolute left-1/2 top-[130%] flex h-7 -translate-x-1/2 -translate-y-1 items-center rounded-2xl bg-stone-200 px-3.5 opacity-0 transition duration-300 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100",
-                  idx === links.length - 1 && "max-[630px]:-translate-x-3/4",
+                  idx === externalLinks.length - 1 &&
+                    "max-[630px]:-translate-x-3/4",
                 )}
               >
                 {link.label}

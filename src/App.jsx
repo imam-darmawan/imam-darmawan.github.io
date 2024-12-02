@@ -10,8 +10,8 @@ const App = () => {
     <div className="mx-auto max-w-[34.5rem]">
       <Header selectedRole={selectedRole} setSelectedRole={setSelectedRole} />
       <main>
-        <About />
-        <Works />
+        <About selectedRole={selectedRole} />
+        <Works selectedRole={selectedRole} />
       </main>
       <footer className="mt-16">
         <small className="block text-center text-xs text-stone-500">

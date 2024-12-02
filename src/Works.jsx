@@ -1,8 +1,11 @@
 import clsx from "clsx";
 import PropTypes from "prop-types";
+import List from "./components/List";
+import Gallery from "./components/Gallery";
 import { useState } from "react";
 
-const CategorySelector = ({ category, onClick, filter }) => {
+// Category radio button
+const Category = ({ category, onClick, filter }) => {
   return (
     <label htmlFor={category} key={category}>
       <input
@@ -12,11 +15,11 @@ const CategorySelector = ({ category, onClick, filter }) => {
         value={category}
         onClick={onClick}
         className="peer hidden"
-        {...(filter.includes(category) && { defaultChecked: true })}
       />
       <span
         className={clsx(
-          "flex h-7 cursor-pointer items-center rounded-2xl border border-stone-300 px-3.5 transition hover:bg-stone-200 peer-checked:border-stone-400 peer-checked:bg-stone-200",
+          "flex h-7 cursor-pointer items-center rounded-2xl border border-stone-300 px-3.5 transition hover:bg-stone-200",
+          category === filter && "border-stone-400 bg-stone-200",
         )}
       >
         {category}
@@ -25,47 +28,86 @@ const CategorySelector = ({ category, onClick, filter }) => {
   );
 };
 
-const Works = () => {
+const Works = ({ selectedRole }) => {
   const [filter, setFilter] = useState("All");
 
-  const cateogries = ["Themes", "Games"];
+  const categories = {
+    developer: ["Themes", "Games"],
+    designer: ["Illustrations", "UI/UX", "Posts"],
+  };
 
-  const works = [
-    {
-      title: "Yuuga",
-      url: "https://themeskibou-yuuga.pages.dev",
-      date: "2024",
-      category: cateogries[0],
-    },
-    {
-      title: "Monster Truck",
-      url: "https://id-monstertruck-game.pages.dev",
-      date: "2023",
-      category: cateogries[1],
-    },
-  ];
+  !categories[selectedRole].includes(filter) &&
+    filter !== "All" &&
+    setFilter("All");
+
+  const works = {
+    developer: [
+      {
+        title: "Yuuga",
+        url: "https://themeskibou-yuuga.pages.dev",
+        date: "2024",
+        category: categories.developer[0],
+      },
+      {
+        title: "Monster Truck",
+        url: "https://id-monstertruck-game.pages.dev",
+        date: "2023",
+        category: categories.developer[1],
+      },
+    ],
+    designer: [
+      {
+        image: "https://placecats.com/200/150",
+        date: "2024",
+        category: categories.designer[1],
+      },
+      {
+        image: "https://placecats.com/200/270",
+        date: "2021",
+        category: categories.designer[0],
+      },
+      {
+        image: "https://placecats.com/200/300",
+        date: "2018",
+        category: categories.designer[1],
+      },
+      {
+        image: "https://placecats.com/200/130",
+        date: "2024",
+        category: categories.designer[1],
+      },
+      {
+        image: "https://placecats.com/200/240",
+        date: "2021",
+        category: categories.designer[0],
+      },
+      {
+        image: "https://placecats.com/200/260",
+        date: "2018",
+        category: categories.designer[1],
+      },
+    ],
+  };
 
   const filteredWorks =
-    filter === "All" ? works : works.filter((work) => work.category === filter);
+    filter === "All"
+      ? works[selectedRole]
+      : works[selectedRole].filter((work) => work.category === filter);
 
   const handleFilter = (e) => {
     setFilter(e.target.value);
   };
 
   return (
-    <div className="mt-20 flex-wrap text-center">
+    <div className="mt-20 text-center">
       <h2 className="text-lg font-bold">Works</h2>
 
       {/* Filter */}
-      <fieldset className="mt-4 flex justify-center gap-2">
-        <CategorySelector
-          category="All"
-          filter={filter}
-          onClick={handleFilter}
-        />
+      <fieldset className="mt-4 flex flex-wrap justify-center gap-2">
+        <Category category="All" filter={filter} onClick={handleFilter} />
 
-        {cateogries.map((category) => (
-          <CategorySelector
+        {categories[selectedRole].map((category) => (
+          <Category
             key={category}
             category={category}
             filter={filter}
@@ -74,31 +116,21 @@ const Works = () => {
         ))}
       </fieldset>
 
-      {/* Works list */}
-      <ul className="mt-8">
-        {filteredWorks.map((work) => (
-          <li
-            key={work.title}
-            className="relative flex h-[3.25rem] items-center"
-          >
-            <a
-              href={work.url}
-              className="flex h-full w-full items-center justify-between border-b border-stone-300 px-3 transition-all hover:border-b-stone-400 hover:px-5"
-              target="_blank"
-            >
-              <span className="text-sm font-bold">{work.title}</span>
-              <span className="text-stone-600">
-                {work.category} - <time dateTime={work.date}>{work.date}</time>
-              </span>
-            </a>
-          </li>
-        ))}
-      </ul>
+      {/* Work list */}
+      {selectedRole === "developer" ? (
+        <List works={filteredWorks} />
+      ) : (
+        <Gallery works={filteredWorks} filter={filter} />
+      )}
     </div>
   );
 };
 
-CategorySelector.propTypes = {
+Works.propTypes = {
+  selectedRole: PropTypes.string.isRequired,
+};
+
+Category.propTypes = {
   category: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
   filter: PropTypes.string.isRequired,
