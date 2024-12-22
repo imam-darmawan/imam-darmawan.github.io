@@ -4,10 +4,16 @@ import author from "../data/author";
 import clsx from "clsx";
 import Button from "../components/Button";
 import PropTypes from "prop-types";
+import { create } from "zustand";
+
+const useProjectsStore = create((set) => ({
+  filterKeyword: "all",
+  setFilterKeyword: (keyword) => set(() => ({ filterKeyword: keyword })),
+}));
 
 const Filter = () => {
   const { selectedRole } = useAppStore();
-  const [keyword, setKeyword] = useState("all");
+  const { filterKeyword, setFilterKeyword } = useProjectsStore();
 
   const tags = [
     ...new Set(
@@ -25,7 +31,7 @@ const Filter = () => {
   return (
     <div className="flex flex-wrap justify-center gap-2">
       {tags.map((tag) => {
-        const isChecked = tag === keyword;
+        const isChecked = tag === filterKeyword;
 
         return (
           <Button
@@ -37,7 +43,7 @@ const Filter = () => {
               "capitalize",
               isChecked && "border-stone-400 bg-stone-200",
             )}
-            onClick={() => setKeyword(tag)}
+            onClick={() => setFilterKeyword(tag)}
           />
         );
       })}
@@ -66,6 +72,14 @@ const ProjectCard = ({ project }) => {
 
 const Projects = () => {
   const { selectedRole } = useAppStore();
+  const { filterKeyword } = useProjectsStore();
+
+  const filteredProjects =
+    filterKeyword === "all"
+      ? author.roles[selectedRole].projects
+      : author.roles[selectedRole].projects.filter((project) =>
+          project.tags.includes(filterKeyword),
+        );
 
   return (
     <div className="mt-20">
@@ -76,7 +90,7 @@ const Projects = () => {
       </div>
 
       <div className="mt-8">
-        {author.roles[selectedRole].projects.map((project) => (
+        {filteredProjects.map((project) => (
           <ProjectCard key={project.title} project={project} />
         ))}
       </div>
