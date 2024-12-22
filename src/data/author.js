@@ -8,6 +8,7 @@ export default {
         {
           title: "formstudio.site Clone",
           url: "https://id-portfolio-formstudio.pages.dev",
+          description: `This is a clone and modified version of <a href="" target="_blank" rel="noreferrer noopener">FF Identity</a> Framer template. Design and concept is credited and owned by <a href="" target="_blank" rel="noreferrer noopener"> Favorit x Frame</a>. If you like the template, you can buy by following the link.`,
           date: 2024,
           category: "clone",
           tags: ["react", "gsap", "tailwindcss"],

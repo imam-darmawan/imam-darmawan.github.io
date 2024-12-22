@@ -1,15 +1,10 @@
-import { useState } from "react";
 import useAppStore from "../context/app-store";
 import author from "../data/author";
 import clsx from "clsx";
 import Button from "../components/Button";
 import PropTypes from "prop-types";
-import { create } from "zustand";
-
-const useProjectsStore = create((set) => ({
-  filterKeyword: "all",
-  setFilterKeyword: (keyword) => set(() => ({ filterKeyword: keyword })),
-}));
+import useProjectsStore from "../context/projects-store";
+import ProjectPreview from "../components/ProjectPreview";
 
 const Filter = () => {
   const { selectedRole } = useAppStore();
@@ -20,7 +15,6 @@ const Filter = () => {
       author.roles[selectedRole].projects.reduce(
         (accumulator, project) => {
           if (project.tags) return accumulator.concat(project.tags);
-
           return accumulator;
         },
         ["all"],
@@ -51,7 +45,7 @@ const Filter = () => {
   );
 };
 
-const ProjectCard = ({ project }) => {
+const ProjectCard = ({ project, onClick }) => {
   return (
     <div className="relative flex min-h-14 items-center gap-3 border-b border-stone-300 p-3 transition-all hover:border-stone-400 hover:px-4">
       <h3 className="flex-1 font-bold">{project.title}</h3>
@@ -61,7 +55,7 @@ const ProjectCard = ({ project }) => {
         {project.date && <time dateTime={project.date}>{project.date}</time>}
       </p>
 
-      <button className="absolute inset-0">
+      <button className="absolute inset-0" onClick={onClick}>
         <span className="inline-block h-0 w-0 overflow-hidden">
           See Project
         </span>
@@ -72,7 +66,8 @@ const ProjectCard = ({ project }) => {
 
 const Projects = () => {
   const { selectedRole } = useAppStore();
-  const { filterKeyword } = useProjectsStore();
+  const { filterKeyword, selectedProject, setSelectedProject } =
+    useProjectsStore();
 
   const filteredProjects =
     filterKeyword === "all"
@@ -91,9 +86,25 @@ const Projects = () => {
 
       <div className="mt-8">
         {filteredProjects.map((project) => (
-          <ProjectCard key={project.title} project={project} />
+          <ProjectCard
+            key={project.title}
+            project={project}
+            onClick={() => {
+              document.body.style.overflowY = "hidden";
+              setSelectedProject(project);
+            }}
+          />
         ))}
       </div>
+
+      {selectedProject && (
+        <div className={clsx("fixed inset-0 z-10")}>
+          <ProjectPreview
+            project={selectedProject}
+            setProject={setSelectedProject}
+          />
+        </div>
+      )}
     </div>
   );
 };
@@ -102,10 +113,13 @@ ProjectCard.propTypes = {
   project: PropTypes.shape({
     title: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,
+    description: PropTypes.string,
+    source: PropTypes.string,
     date: PropTypes.number,
     category: PropTypes.string,
     tags: PropTypes.arrayOf(PropTypes.string),
   }),
+  onClick: PropTypes.func,
 };
 
 export default Projects;
