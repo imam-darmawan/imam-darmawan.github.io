@@ -3,11 +3,12 @@ import { clsx } from "clsx";
 import Button from "../components/Button";
 import Tabs from "../components/Tabs";
 import Boxicons from "../assets/icons/Boxicons";
-import PropTypes from "prop-types";
+import useProjectsStore from "../context/projects-store";
 
-const ProjectPreview = ({ project, setProject }) => {
+const ProjectPreview = () => {
   const [screenMode, setScreenMode] = useState("desktop");
   const [isDescriptionOpen, setIsDescriptionOpen] = useState(true);
+  const { selectedProject, setSelectedProject } = useProjectsStore();
 
   return (
     <div className={clsx("flex h-full w-full flex-col gap-3 bg-stone-100 p-3")}>
@@ -18,7 +19,7 @@ const ProjectPreview = ({ project, setProject }) => {
             label="<- Back"
             onClick={() => {
               document.body.style.overflowY = "scroll";
-              setProject(undefined);
+              setSelectedProject(undefined);
             }}
           />
         </div>
@@ -35,7 +36,7 @@ const ProjectPreview = ({ project, setProject }) => {
         </div>
 
         <div className="flex flex-1 items-center justify-end gap-2">
-          {project.description && (
+          {selectedProject.description && (
             <Button
               label="Info"
               icon={<Boxicons name="info" className="h-4 w-4" />}
@@ -44,16 +45,24 @@ const ProjectPreview = ({ project, setProject }) => {
             />
           )}
 
-          {project.source && (
-            <Button label="</> Source" url={project.source} type="secondary" />
+          {selectedProject.source && (
+            <Button
+              label="</> Source"
+              url={selectedProject.source}
+              type="secondary"
+            />
           )}
 
-          <Button label="Fullpage ->" url={project.url} type="primary" />
+          <Button
+            label="Fullpage ->"
+            url={selectedProject.url}
+            type="primary"
+          />
         </div>
       </div>
 
       {/* Project Description */}
-      {project.description && (
+      {selectedProject.description && (
         <div
           className={clsx(
             "absolute inset-0 z-10 flex items-center justify-center bg-stone-900/90 p-6",
@@ -63,7 +72,7 @@ const ProjectPreview = ({ project, setProject }) => {
           <div className="relative w-96 rounded-3xl bg-stone-100 px-8 py-6">
             <p
               className="[&_a]:underline"
-              dangerouslySetInnerHTML={{ __html: project.description }}
+              dangerouslySetInnerHTML={{ __html: selectedProject.description }}
             ></p>
 
             <Button
@@ -97,23 +106,10 @@ const ProjectPreview = ({ project, setProject }) => {
             ))}
         </div>
 
-        <iframe src={project.url} className="flex-1"></iframe>
+        <iframe src={selectedProject.url} className="flex-1"></iframe>
       </div>
     </div>
   );
-};
-
-ProjectPreview.propTypes = {
-  project: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    url: PropTypes.string.isRequired,
-    description: PropTypes.string,
-    source: PropTypes.string,
-    date: PropTypes.number,
-    category: PropTypes.string,
-    tags: PropTypes.arrayOf(PropTypes.string),
-  }),
-  setProject: PropTypes.func.isRequired,
 };
 
 export default ProjectPreview;
