@@ -3,5 +3,5 @@ import author from "../data/author";
 
 export default create((set) => ({
   selectedRole: Object.keys(author.roles)[0],
-  setSelectedRole: (role) => set(() => ({ selectedRole: role })),
+  setSelectedRole: (role) => set({ selectedRole: role }),
 }));

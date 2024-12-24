@@ -117,6 +117,7 @@ ProjectCard.propTypes = {
     category: PropTypes.string,
     description: PropTypes.string,
     source: PropTypes.string,
+    libs: PropTypes.arrayOf(PropTypes.string),
   }),
   onClick: PropTypes.func,
 };
