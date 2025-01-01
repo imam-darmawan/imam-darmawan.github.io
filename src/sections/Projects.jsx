@@ -77,35 +77,37 @@ const Projects = () => {
         );
 
   return (
-    <div className="mt-20">
-      <h2 className="text-center text-lg font-bold">Projects</h2>
+    filteredProjects.length !== 0 && (
+      <div className="mt-20">
+        <h2 className="text-center text-lg font-bold">Projects</h2>
 
-      <div className="mt-4">
-        <Filter />
-      </div>
-
-      <div className="mt-8">
-        {filteredProjects.map((project) => (
-          <ProjectCard
-            key={project.title}
-            project={project}
-            onClick={() => {
-              document.body.style.overflowY = "hidden";
-              setSelectedProject(project);
-            }}
-          />
-        ))}
-      </div>
-
-      {selectedProject && (
-        <div className={clsx("fixed inset-0 z-10")}>
-          <ProjectPreview
-            project={selectedProject}
-            setProject={setSelectedProject}
-          />
+        <div className="mt-4">
+          <Filter />
         </div>
-      )}
-    </div>
+
+        <div className="mt-8">
+          {filteredProjects.map((project) => (
+            <ProjectCard
+              key={project.title}
+              project={project}
+              onClick={() => {
+                document.body.style.overflowY = "hidden";
+                setSelectedProject(project);
+              }}
+            />
+          ))}
+        </div>
+
+        {selectedProject && (
+          <div className={clsx("fixed inset-0 z-10")}>
+            <ProjectPreview
+              project={selectedProject}
+              setProject={setSelectedProject}
+            />
+          </div>
+        )}
+      </div>
+    )
   );
 };
 
