@@ -81,18 +81,18 @@ const Information = () => {
     (selectedProject.description || selectedProject.libs) &&
     isInfoOpen && (
       <div
-        className="absolute inset-0 z-10 flex items-center justify-center bg-stone-900/90 p-6"
+        className="absolute inset-0 z-10 flex items-center justify-center bg-stone-900/80 p-6"
         onClick={handleClickOutside}
       >
         <div
-          className="relative w-96 rounded-3xl bg-stone-100 px-8 py-6"
+          className="relative w-96 rounded-3xl bg-stone-100 px-10 py-8"
           onClick={(e) => e.stopPropagation()}
         >
-          <h3 className="text-base font-bold">{selectedProject.title}</h3>
+          <h3 className="text-lg font-bold">{selectedProject.title}</h3>
 
           {selectedProject.description && (
             <p
-              className="mt-2 text-stone-700 [&_a]:underline"
+              className="mt-3 text-sm font-normal text-stone-800 [&_a]:underline"
               dangerouslySetInnerHTML={{ __html: selectedProject.description }}
             ></p>
           )}
@@ -100,7 +100,7 @@ const Information = () => {
           {selectedProject.libs && (
             <div className="mt-8">
               <h4 className="font-bold">Notable Technologies</h4>
-              <ul className="mt-2 flex flex-wrap gap-1.5">
+              <ul className="mt-4 flex flex-wrap gap-1.5">
                 {selectedProject.libs.map((lib) => (
                   <li
                     key={lib}
