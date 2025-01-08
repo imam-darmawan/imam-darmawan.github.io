@@ -25,7 +25,7 @@ const Header = () => {
         <Button
           label="<- Back"
           onClick={() => {
-            document.body.style.overflowY = "scroll";
+            document.body.style.overflowY = "auto";
             setSelectedProject(undefined);
             reset();
           }}

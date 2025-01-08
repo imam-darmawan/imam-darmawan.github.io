@@ -15,7 +15,8 @@ const Button = ({
     "group text-nowrap rounded-full capitalize transition",
     type ? "px-4 py-2" : "hover:text-stone-500",
     type === "primary" && "bg-stone-900 text-stone-100 hover:bg-stone-600",
-    type === "secondary" && "border border-stone-300 hover:bg-stone-200",
+    type === "secondary" &&
+      "bg-stone-100 border border-stone-300 hover:bg-stone-200",
     size === "small" && "px-3.5 py-[0.344rem]",
     className,
   );

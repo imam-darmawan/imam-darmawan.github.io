@@ -4,9 +4,11 @@ import Boxicons from "../assets/icons/Boxicons";
 import useAppStore from "../context/app-store";
 import Tabs from "../components/Tabs";
 import Button from "../components/Button";
+import useProjectsStore from "../context/projects-store";
 
 const Header = () => {
   const { selectedRole, setSelectedRole } = useAppStore();
+  const { setFilterKeyword } = useProjectsStore();
 
   return (
     <header className="flex h-[2.875rem] items-center">
@@ -25,7 +27,10 @@ const Header = () => {
           <Tabs
             list={Object.keys(author.roles)}
             activeTab={selectedRole}
-            onTabClick={setSelectedRole}
+            onTabClick={(role) => {
+              setFilterKeyword("all");
+              setSelectedRole(role);
+            }}
           />
         </nav>
       </div>

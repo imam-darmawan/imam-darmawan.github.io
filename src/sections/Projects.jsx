@@ -2,9 +2,9 @@ import useAppStore from "../context/app-store";
 import author from "../data/author";
 import clsx from "clsx";
 import Button from "../components/Button";
-import PropTypes from "prop-types";
 import useProjectsStore from "../context/projects-store";
-import ProjectPreview from "../components/ProjectPreview";
+import ProjectsList from "./ProjectsList";
+import ProjectsGallery from "./ProjectsGallery";
 
 const Filter = () => {
   const { selectedRole } = useAppStore();
@@ -12,7 +12,7 @@ const Filter = () => {
 
   const categories = [
     ...new Set(
-      author.roles[selectedRole].projects.reduce(
+      author.roles[selectedRole].projects.list.reduce(
         (accumulator, project) => {
           if (project.category) return accumulator.concat(project.category);
           return accumulator;
@@ -45,36 +45,27 @@ const Filter = () => {
   );
 };
 
-const ProjectCard = ({ project, onClick }) => {
-  return (
-    <div className="relative flex min-h-12 items-center gap-3 border-b border-stone-300 p-3 transition-all hover:border-stone-400 hover:px-4">
-      <h3 className="flex-1 font-bold">{project.title}</h3>
-
-      <p className="capitalize text-stone-600">
-        {project.category && project.category}
-        {project.date && <time dateTime={project.date}> — {project.date}</time>}
-      </p>
-
-      <button className="absolute inset-0" onClick={onClick}>
-        <span className="inline-block h-0 w-0 overflow-hidden">
-          See Project
-        </span>
-      </button>
-    </div>
-  );
-};
-
 const Projects = () => {
   const { selectedRole } = useAppStore();
-  const { filterKeyword, selectedProject, setSelectedProject } =
-    useProjectsStore();
+  const { filterKeyword } = useProjectsStore();
 
   const filteredProjects =
     filterKeyword === "all"
-      ? author.roles[selectedRole].projects
-      : author.roles[selectedRole].projects.filter(
+      ? author.roles[selectedRole].projects.list
+      : author.roles[selectedRole].projects.list.filter(
           (project) => project.category === filterKeyword,
         );
+
+  let projectsToShow;
+
+  switch (author.roles[selectedRole].projects.type) {
+    case "list":
+      projectsToShow = <ProjectsList projects={filteredProjects} />;
+      break;
+    case "gallery":
+      projectsToShow = <ProjectsGallery projects={filteredProjects} />;
+      break;
+  }
 
   return (
     filteredProjects.length !== 0 && (
@@ -85,43 +76,10 @@ const Projects = () => {
           <Filter />
         </div>
 
-        <div className="mt-8">
-          {filteredProjects.map((project) => (
-            <ProjectCard
-              key={project.title}
-              project={project}
-              onClick={() => {
-                document.body.style.overflowY = "hidden";
-                setSelectedProject(project);
-              }}
-            />
-          ))}
-        </div>
-
-        {selectedProject && (
-          <div className={clsx("fixed inset-0 z-10")}>
-            <ProjectPreview
-              project={selectedProject}
-              setProject={setSelectedProject}
-            />
-          </div>
-        )}
+        <div className="mt-8">{projectsToShow}</div>
       </div>
     )
   );
-};
-
-ProjectCard.propTypes = {
-  project: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    url: PropTypes.string.isRequired,
-    date: PropTypes.number,
-    category: PropTypes.string,
-    description: PropTypes.string,
-    source: PropTypes.string,
-    libs: PropTypes.arrayOf(PropTypes.string),
-  }),
-  onClick: PropTypes.func,
 };
 
 export default Projects;
