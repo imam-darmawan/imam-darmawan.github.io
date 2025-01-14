@@ -1,3 +1,11 @@
+const generatePortfolioURLs = (baseLocation, totalImages) => {
+  const urls = [];
+  for (let i = 0; i < totalImages; i++) {
+    urls.push(`${baseLocation}/${i + 1}.webp`);
+  }
+  return urls;
+};
+
 export default {
   name: "Imam Darmawan",
   roles: {
@@ -52,13 +60,13 @@ export default {
             url: "https://id-typingrate.pages.dev",
             date: 2023,
             category: "game",
-            libs: ["javascript"],
+            libs: ["javascript", "chartjs", "html2canvas"],
           },
         ],
       },
     },
     designer: {
-      about: `This page is under construction 🚧.  Please visit my temporary <a href="/designer" class="underline underline-offset-4 hover:text-stone-500 transition" target="_blank">designer page</a> to see my UI/UX design works.`,
+      about: `In addition, I also specialize in UI/UX design. This page showcases my work in this field.`,
       projects: {
         type: "gallery",
         list: [
@@ -67,24 +75,84 @@ export default {
           images: Array<String>, // Required
         }, */
           {
-            category: "ecommerce",
-            images: [
-              "https://placecats.com/louie/208/202",
-              "https://placecats.com/louie/150/151",
-              "https://placecats.com/louie/300/202",
-              "https://placecats.com/louie/180/153",
-            ],
+            category: "blog",
+            images: generatePortfolioURLs("/20", 2),
+          },
+          {
+            category: "component",
+            images: generatePortfolioURLs("/19", 2),
+          },
+          {
+            category: "component",
+            images: generatePortfolioURLs("/18", 1),
           },
           {
             category: "blog",
-            images: ["https://placecats.com/louie/280/209"],
+            images: generatePortfolioURLs("/17", 5),
+          },
+          {
+            category: "blog",
+            images: generatePortfolioURLs("/16", 1),
+          },
+          {
+            category: "component",
+            images: generatePortfolioURLs("/15", 2),
+          },
+          {
+            category: "component",
+            images: generatePortfolioURLs("/14", 1),
+          },
+          {
+            category: "component",
+            images: generatePortfolioURLs("/13", 1),
+          },
+          {
+            category: "component",
+            images: generatePortfolioURLs("/12", 1),
+          },
+          {
+            category: "ecommerce",
+            images: generatePortfolioURLs("/11", 5),
+          },
+          {
+            category: "ecommerce",
+            images: generatePortfolioURLs("/10", 5),
           },
           {
             category: "portfolio",
-            images: [
-              "https://placecats.com/louie/250/205",
-              "https://placecats.com/louie/350/154",
-            ],
+            images: generatePortfolioURLs("/9", 2),
+          },
+          {
+            category: "component",
+            images: generatePortfolioURLs("/8", 2),
+          },
+          {
+            category: "blog",
+            images: generatePortfolioURLs("/7", 2),
+          },
+          {
+            category: "component",
+            images: generatePortfolioURLs("/6", 1),
+          },
+          {
+            category: "component",
+            images: generatePortfolioURLs("/5", 2),
+          },
+          {
+            category: "component",
+            images: generatePortfolioURLs("/4", 1),
+          },
+          {
+            category: "blog",
+            images: generatePortfolioURLs("/3", 2),
+          },
+          {
+            category: "component",
+            images: generatePortfolioURLs("/2", 1),
+          },
+          {
+            category: "ecommerce",
+            images: generatePortfolioURLs("/1", 3),
           },
         ],
       },
