@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 import useProjectsStore from "../context/projects-store";
 import { useState } from "react";
-import { clsx } from "clsx";
 import Button from "../components/Button";
 import Boxicons from "../assets/icons/Boxicons";
 
@@ -30,89 +29,157 @@ const ProjectCard = ({ project, onClick }) => {
   );
 };
 
+// const ProjectPreview = () => {
+//   const { selectedProject, setSelectedProject } = useProjectsStore();
+//   const [focusedImage, setFocusedImage] = useState(0);
+
+//   const handleSlide = (e, direction) => {
+//     e.stopPropagation();
+
+//     const nextImage = focusedImage + direction;
+
+//     if (nextImage === selectedProject.images.length) {
+//       setFocusedImage(0);
+//     } else if (nextImage < 0) {
+//       setFocusedImage(selectedProject.images.length - 1);
+//     } else {
+//       setFocusedImage(nextImage);
+//     }
+//   };
+
+//   const handleClose = (e) => {
+//     e.stopPropagation();
+//     document.body.style.overflowY = "auto";
+//     setSelectedProject(undefined);
+//   };
+
+//   return (
+//     <div
+//       className="fixed inset-0 z-10 flex flex-col gap-3 bg-stone-900/80 p-8"
+//       onClick={handleClose}
+//     >
+//       {/* Focused image */}
+//       <div className="relative flex-1" aria-hidden="true">
+//         <img
+//           src={selectedProject.images[focusedImage]}
+//           className="absolute h-full w-full object-contain"
+//           loading="lazy"
+//         />
+//       </div>
+
+//       {/* Images */}
+//       <div
+//         className="mx-auto flex h-7 w-fit max-w-full gap-3 overflow-x-auto [&::-webkit-scrollbar]:hidden"
+//         onClick={(e) => e.stopPropagation()}
+//       >
+//         {selectedProject.images.map((image, idx) => (
+//           <img
+//             key={image}
+//             src={image}
+//             alt={selectedProject.category}
+//             className={clsx(
+//               "relative z-10 aspect-[4/3] h-full cursor-pointer rounded-full object-cover opacity-50 transition hover:opacity-100",
+//               idx === focusedImage && "border-2 border-stone-100 !opacity-100",
+//             )}
+//             loading="lazy"
+//             onClick={() => setFocusedImage(idx)}
+//           />
+//         ))}
+//       </div>
+
+//       {/* Controls */}
+//       <Button
+//         label="Close"
+//         icon={<Boxicons name="x" className="h-5 w-5" />}
+//         className="absolute right-0 top-0 px-5 py-5 text-stone-100"
+//         onClick={handleClose}
+//       />
+
+//       <Button
+//         label="Prev"
+//         icon={<Boxicons name="left-arrow-alt" className="h-4 w-4" />}
+//         type="secondary"
+//         size="small"
+//         className="absolute left-6 top-1/2 -translate-y-1/2 !px-2.5"
+//         onClick={(e) => handleSlide(e, -1)}
+//       />
+
+//       <Button
+//         label="Next"
+//         icon={<Boxicons name="right-arrow-alt" className="h-4 w-4" />}
+//         type="secondary"
+//         size="small"
+//         className="absolute right-6 top-1/2 -translate-y-1/2 !px-2.5"
+//         onClick={(e) => handleSlide(e, 1)}
+//       />
+//     </div>
+//   );
+// };
+
 const ProjectPreview = () => {
   const { selectedProject, setSelectedProject } = useProjectsStore();
-  const [focusedImage, setFocusedImage] = useState(0);
-
-  const handleSlide = (e, direction) => {
-    e.stopPropagation();
-
-    const nextImage = focusedImage + direction;
-
-    if (nextImage === selectedProject.images.length) {
-      setFocusedImage(0);
-    } else if (nextImage < 0) {
-      setFocusedImage(selectedProject.images.length - 1);
-    } else {
-      setFocusedImage(nextImage);
-    }
-  };
-
-  const handleClose = (e) => {
-    e.stopPropagation();
-    document.body.style.overflowY = "auto";
-    setSelectedProject(undefined);
-  };
+  const [focusedImage, setFocusedImage] = useState();
 
   return (
     <div
-      className="fixed inset-0 z-10 flex flex-col gap-3 bg-stone-900/80 p-8"
-      onClick={handleClose}
+      className="fixed inset-0 z-10 flex flex-col bg-stone-900/80"
+      onClick={() => {
+        setSelectedProject(undefined);
+        document.body.style.overflowY = "auto";
+      }}
     >
-      {/* Focused image */}
-      <div className="relative flex-1" aria-hidden="true">
-        <img
-          src={selectedProject.images[focusedImage]}
-          className="absolute h-full w-full object-contain"
-          loading="lazy"
+      {/* Close button */}
+      <div className="text-right">
+        <Button
+          label="Close"
+          icon={<Boxicons name="x" className="h-5 w-5" />}
+          className="px-3 py-3 text-stone-100"
         />
       </div>
 
       {/* Images */}
       <div
-        className="mx-auto flex h-7 w-fit max-w-full gap-3 overflow-x-auto [&::-webkit-scrollbar]:hidden"
+        className="flex-1 overflow-y-auto rounded-t-3xl bg-stone-100 p-10 sm:p-16 md:p-20"
         onClick={(e) => e.stopPropagation()}
       >
-        {selectedProject.images.map((image, idx) => (
-          <img
-            key={image}
-            src={image}
-            alt={selectedProject.category}
-            className={clsx(
-              "relative z-10 aspect-[4/3] h-full cursor-pointer rounded-full object-cover opacity-50 transition hover:opacity-100",
-              idx === focusedImage && "border-2 border-stone-100 !opacity-100",
-            )}
-            loading="lazy"
-            onClick={() => setFocusedImage(idx)}
-          />
-        ))}
+        <div className="mx-auto max-w-[64rem] space-y-8">
+          {selectedProject.images.map((image) => {
+            return (
+              <img
+                key={image}
+                src={image}
+                alt={selectedProject.category}
+                className="aspect-[4/3] w-full cursor-pointer"
+                loading="lazy"
+                onClick={() => setFocusedImage(image)}
+              />
+            );
+          })}
+        </div>
       </div>
 
-      {/* Controls */}
-      <Button
-        label="Close"
-        icon={<Boxicons name="x" className="h-5 w-5" />}
-        className="absolute right-0 top-0 px-5 py-5 text-stone-100"
-        onClick={handleClose}
-      />
-
-      <Button
-        label="Prev"
-        icon={<Boxicons name="left-arrow-alt" className="h-4 w-4" />}
-        type="secondary"
-        size="small"
-        className="absolute left-6 top-1/2 -translate-y-1/2 !px-2.5"
-        onClick={(e) => handleSlide(e, -1)}
-      />
-
-      <Button
-        label="Next"
-        icon={<Boxicons name="right-arrow-alt" className="h-4 w-4" />}
-        type="secondary"
-        size="small"
-        className="absolute right-6 top-1/2 -translate-y-1/2 !px-2.5"
-        onClick={(e) => handleSlide(e, 1)}
-      />
+      {/* Focused image */}
+      {focusedImage && (
+        <div
+          className="absolute inset-0 cursor-zoom-out bg-stone-900/80 p-4 sm:p-8"
+          aria-hidden="true"
+          onClick={(e) => {
+            e.stopPropagation();
+            setFocusedImage(undefined);
+          }}
+        >
+          <img
+            src={focusedImage}
+            className="h-full w-full object-contain"
+            loading="lazy"
+          />
+          <Button
+            label="Close"
+            icon={<Boxicons name="x" className="h-5 w-5" />}
+            className="absolute right-0 top-0 px-3 py-3 text-stone-100"
+          />
+        </div>
+      )}
     </div>
   );
 };
@@ -148,10 +215,6 @@ const schema = PropTypes.shape({
 ProjectCard.propTypes = {
   project: schema,
   onClick: PropTypes.func,
-};
-
-ProjectPreview.propTypes = {
-  project: schema,
 };
 
 ProjectsGallery.propTypes = {
